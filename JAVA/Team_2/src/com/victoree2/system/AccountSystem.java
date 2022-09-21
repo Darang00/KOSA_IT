@@ -87,7 +87,12 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 		System.out.println(message(room.language, "0011"));
 		save();
 	}
-
+	//업데이트
+	public void update(AccountData ac){
+		this.account.remove(ac.getId());
+		account.put(ac.getId(), ac);
+		save();
+	}
 	public AccountData login() { //로그인
 		System.out.println(message(room.language, "0012"));
 		System.out.println(message(room.language, "0008")+" " + message(room.language, "0009") + " : ");
@@ -110,7 +115,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 	}
 
 	public void delete(HashMap<String, AccountData> account) {//계정삭제
-		this.account = account;	
+		this.account = account;
 	}
 
 	public void resetPassword() {//패스워드초기화

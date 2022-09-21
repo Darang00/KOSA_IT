@@ -24,8 +24,7 @@ public class SystemEx extends ReturnMessage{
 			AccountSystem user = factory.getUser();
 			user.load(); //로그인 체크를 위해 로그인 정보가 저장된 파일을 불러올것이다
 			//관리자가 회원의 정보를 모두 보기위해 map값을 전부 가져옴
-			Set<String> userMap = user.getAccount().keySet();
-						
+			HashMap<String, AccountData> userMap = user.getAccount();
 			switch (key) {
 			case 1://로그인
 				AccountData userStatus = user.login();
@@ -51,7 +50,7 @@ public class SystemEx extends ReturnMessage{
 				change=!change;
 				room.language = (change) ?  "kor" : "en";
 				break;
-			case 0:
+			case -1:
 				System.out.println(message(room.language, "0018"));
 				System.exit(0);
 				break;
