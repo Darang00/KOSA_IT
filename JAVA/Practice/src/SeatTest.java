@@ -2,111 +2,115 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class SeatTest {
+	
 	public String firstBraket = "[";
-	//String blank = " ";
-	public String firstList;
-	public int midNumi;
-	public int midNumj;
+	private int indexX;
+	private int indexY;
 	public String lastBraket = "]";	
+	private int cnt;
+	private List<String[][]> roomNum = new ArrayList<String[][]>(); //다형성 //열람실 번호 roomNum
 	
-	public String[][] arr1 = new String[3][5];
-	public String[][] arr2 = new String[4][5];
-	public String[][] arr3 = new String[9][5];
-	// int cnt = 0;
-	static List<String[][]> room = new ArrayList<String[][]>(); //다형성 //열람실
+
+	private String deskIndex1[][] = new String[6][9]; //좌석 번호 //세로열 [0~2], 가로열[0~6] 
+	private String deskIndex2[][] = new String[4][6]; //좌석 번호 //세로열 [0~3], 가로열[0~5]
+	private String deskIndex3[][] = new String[5][5]; //좌석 번호 //세로열 [0~4], 가로열[0~4]
 	
-	static String deskIndex[][] = new String[5][7]; //좌석 번호 //세로열 [0~9], 가로열[0, 9] 
+	Scanner scan = new Scanner(System.in);
 	
-	
-	void seat() { //좌석 배열
-			midNumi = 0;
-			for (int i = 0; i < arr1.length; i++) {
-				for (int j = 0; j < arr1[i].length; j++) {
-					arr1[i][j] =firstBraket + "1"  + (String.valueOf(midNumi)) + (String.valueOf(midNumj++)) + lastBraket;
-//					System.out.print(deskIndex[i][j]);
-				}
-				midNumj = 0;
-				String.valueOf(midNumi++);
-				System.out.println();
+	void init() { //초기과 좌석 배열
+		cnt = 0;
+		
+		//1열람실 좌석 배열 arr1
+		for (int i = 0; i <deskIndex1.length; i++) {
+			for (int j = 0; j <deskIndex1[i].length; j++) {
+				deskIndex1[i][j] =firstBraket + (String.valueOf(cnt++)) + lastBraket;
+				//System.out.print(deskIndex1[i][j]);
 			}
-			for (int i = 0; i < arr2.length; i++) {
-				for (int j = 0; j < arr2[i].length; j++) {
-					arr2[i][j] =firstBraket + "2"  + (String.valueOf(midNumi)) + (String.valueOf(midNumj++)) + lastBraket;
-//					System.out.print(deskIndex[i][j]);
-				}
-				midNumj = 0;
-				String.valueOf(midNumi++);
-				System.out.println();
+		}
+		cnt=0;
+		
+		//2열람실 좌석 배열 arr2
+		for (int i = 0; i <deskIndex2.length; i++) {
+			for (int j = 0; j <deskIndex2[i].length; j++) {
+				deskIndex2[i][j] =firstBraket + (String.valueOf(cnt++)) + lastBraket;
 			}
-			for (int i = 0; i < arr3.length; i++) {
-				for (int j = 0; j < arr3[i].length; j++) {
-					arr3[i][j] =firstBraket + "3"  + (String.valueOf(midNumi)) + (String.valueOf(midNumj++)) + lastBraket;
-//					System.out.print(deskIndex[i][j]);
-				}
-				midNumj = 0;
-				String.valueOf(midNumi++);
-				System.out.println();
+		}
+		cnt=0;
+		//3열람실 좌석 배열 arr3
+		for (int i = 0; i <deskIndex3.length; i++) {
+			for (int j = 0; j <deskIndex3[i].length; j++) {
+				deskIndex3[i][j] =firstBraket + (String.valueOf(cnt++)) + lastBraket;
 			}
-			room.add(arr1);
-			room.add(arr2);
-			room.add(arr3);
-			for (int i = 0; i < arr3.length; i++) {
-				for (int j = 0; j < arr3[i].length; j++) {
-					System.out.print(arr3[i][j]);
-				}
-				System.out.println();
-				midNumj = 0;
-				String.valueOf(midNumi++);
-				System.out.println();
-			}		
+		}
+		cnt=0;
+		  roomNum.add(deskIndex1);
+		  roomNum.add(deskIndex2);
+		  roomNum.add(deskIndex3);
 	}
 
-
-
-		
-	
-
-	
-	
-		
-	void show() {
-//		for(int r = 0; r<room.size(); r++) {
-//			String[][] str = room.get(r);
-//			System.out.println(r );
-//		}
+	public List<String[][]> getRoomNum() {
+		return roomNum;
 	}
 
+	public void makeRoom(int x, int y) {
+		String temp[][] = new String[y][x];
+		int room = 1;
 		
-		
-		
-	
-	/*
-	void checkAdd() { //ArrayList에 destIndex(2차원 배열 잘 들어갔니?)
-		room.add(deskIndex)
-		room.add(deskIndex);
-	} */
-
-
-	public static void main(String[] args) {
-		
-		SeatTest seatTest = new SeatTest();
-		
-		  seatTest.seat();
-		  
-		  room.add(deskIndex);
-		  room.add(deskIndex);
-		  
-		  seatTest.show();
-		  
-		  //seatTest.checkAdd();
-//		  for(int i = 0; i<room.size(); i++) {
-//			 String[][] str = room.get(i);
-//			 System.out.println(i + ":" + str);
-//			 }
-		//  for(String[][] i : room) {
-		//	  System.out.println(Arrays.deepToString(i)); //Array.toString 하면 주소가 나온다 개빡침
-		//  }
-		 
+		for(int i = 0 ; i < temp.length ; i++) {
+			for(int j = 0 ; j < temp[i].length ; j++) {
+				temp[i][j] = "[" + room +"]";
+				room++;
+			}
+		}
+		roomNum.add(temp);
 	}
+	
+	public void print(int room) {
+		String tmp[][] = roomNum.get(room-1);
+		
+		for(int i = 0 ; i < tmp.length ; i++) {
+			for(int j = 0 ; j < tmp[i].length ; j++) {
+				System.out.print(tmp[i][j]+"\t"); //자리 이쁘게 표현하기
+			}
+			System.out.println();
+		}
+	}
+	
+	///
+	public void update(int room) {
+		boolean pnp = true; // [사용중] 좌석 선택시 다시 돌도록.
+
+		while (pnp == true) {
+			String seat = scan.nextLine();
+			String tempSeat = "[" + seat + "]";
+			String tmp[][] = roomNum.get(room - 1);
+
+			for (int i = 0; i < tmp.length; i++) {
+				for (int j = 0; j < tmp[i].length; j++) {
+					if (tmp[i][j].equals(tempSeat)) {
+						pnp = false;
+						tmp[i][j] = "[" + "사용중" + "]";
+						this.indexX = i;
+						this.indexY = j;
+					}
+
+				}
+			}
+		}
+
+	}
+
+	public int getIndexX() {
+		return indexX;
+	}
+
+	public int getIndexY() {
+		return indexY;
+	}
+	
 }
