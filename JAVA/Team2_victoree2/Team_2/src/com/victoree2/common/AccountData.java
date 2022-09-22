@@ -11,15 +11,25 @@ public class AccountData implements Serializable{
 	private String password; //패스워드
 	private String birthday; //생일
 	private String phoneNumber;
-	private int status; //계정 상태 (1 : 사용자  0 : 계정 정지  9 : 관리자)
+	private int status; //계정 상태 (1 : 사용자  0 : 계정 정지  9 : 관리자 3: 구매한사람?)
 	private boolean checkIn;// 입실/퇴실
 	private int cnt;//경고횟수
 	private int price;//결제금액
-
+	
+	public void setPrice(int price) {
+		this.price = price;
+	}
+	public int getPrice() {
+		return price;
+	}
 	private static final long serialVersionUID = (long)5746694569156904189.0;
 	//serialversionuid 값을 지정을 안하면 로컬과 클라이언트에서 자동으로 생성되는 hash값으로 에러 발생함.
-	
-
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
 	public AccountData(String id, String name, String password, String birthday, String phoneNumber) {
 		this.id = id;
 		this.name = name;

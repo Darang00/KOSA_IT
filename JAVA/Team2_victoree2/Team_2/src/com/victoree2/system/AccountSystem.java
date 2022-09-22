@@ -14,13 +14,13 @@ import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import com.victoree2.common.AccountData;
-import com.victoree2.common.SerializableInterface;
 import com.victoree2.common.ReturnMessage;
 import com.victoree2.main.ReadingRoom;
 
-public class AccountSystem extends ReturnMessage implements SerializableInterface{
+public class AccountSystem extends ReturnMessage{
 	
 	Scanner scan = new Scanner(System.in);
 	ReadingRoom room = new ReadingRoom();
@@ -30,7 +30,12 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 	
 	boolean adminCheck = true;
 	private String id;
+	private String name;
 	private String password;
+	private String birthday;
+	private String phonenumber;
+	
+	
 
 	
 	//파일 직렬화
@@ -46,7 +51,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 	
 	Set<String> set;
 	
-	String filename = "C:\\KOSA_IT\\login\\UserDB1.txt";	
+	String filename = "C:\\KOSA_IT\\login\\UserDB.txt";	
 	File file = new File(filename);
 	
 	
@@ -55,12 +60,22 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 	}
 
 	public void signUP(){ //회원가입
-		String regex = "^[a-zA-Z]{1}[a-zA-Z0-9_]{4,11}";
+//		String idReg = "^[A-za-z0-9]{5,15}";  // [영문 대문자 또는 소문자 또는 숫자로 시작하는 아이디, 길이는 5~15자, 끝날때 제한 없음]
+//		String pwReg = "^(?=.*[A-Za-z])(?=.*\\d)[A-Za-z\\d]{8,}$"; // [최소 8 자, 최소 하나의 문자 및 하나의 숫자]
+//		String birthReg = "^([0-9]{2}(0[1-9]|1[0-2])(0[1-9]|[1,2][0-9]|3[0,1]))"; // [970219 이런 형식으로]
+//		String phoneReg = "^01(?:0|1|[6-9])(?:\\d{3}|\\d{4})\\d{4}$"; // [하이픈 제외]
+		
+		String idReg ="[A-za-z0-9]";
+		String pwReg ="[A-za-z0-9]";
+		String birthReg ="[A-za-z0-9]";
+		String phoneReg ="[A-za-z0-9]";
+		
 		boolean regexCheck;
 		if(!adminCheck) {
 			System.out.println(message(room.language, "0007")+" "+message(room.language, "0005")+message(room.language, "0006"));
 			System.out.println(message(room.language, "0008")+" " + message(room.language, "0009") + " : ");
 			String id = scan.nextLine();
+			
 			System.out.println(message(room.language, "0010") + " " + message(room.language, "0009") + " : ");
 			String password = scan.nextLine();
 			AccountData ac = new AccountData(id, "관리자", password, "00000000", 9);
@@ -71,17 +86,52 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 		}
 		else {
 			System.out.println(message(room.language, "0022"));
-			System.out.println(message(room.language, "0008")+" " + message(room.language, "0009") + " : ");
-			String id = scan.nextLine();
+			
+			
+			while(true) {
+				System.out.println(message(room.language, "0008")+" " + message(room.language, "0009") + " : [길이 5~15자]");
+				this.id = scan.nextLine();
+				if(Pattern.matches(idReg,this.id)) {
+					break;
+				} else {            
+				    System.out.println("올바른 아이디 형식이 아닙니다. ");
+				}
+			}
+			
 			System.out.println(message(room.language, "0023") + " " + message(room.language, "0009") + " : ");
-			String name = scan.nextLine();
-			System.out.println(message(room.language, "0010") + " " + message(room.language, "0009") + " : ");
-			String password = scan.nextLine();
-			System.out.println(message(room.language, "0024") + " " + message(room.language, "0009") + " : ");
-			String birthday = scan.nextLine();
-			System.out.println(message(room.language, "0025") + " " + message(room.language, "0009") + " : ");
-			String phonenumber = scan.nextLine();
-			AccountData ac = new AccountData(id, name, password, birthday,phonenumber);
+			this.name = scan.nextLine();
+			
+			while(true) {
+				System.out.println(message(room.language, "0010") + " " + message(room.language, "0009") + " : [최소 8자 + 문자 숫자조합]");
+				this.password = scan.nextLine();
+				if(Pattern.matches(pwReg,this.password)) {
+					break;
+				} else {            
+				    System.out.println("올바른 비밀번호 형식이 아닙니다. ");
+				}
+			}
+			
+			while(true) {
+				System.out.println(message(room.language, "0024") + " " + message(room.language, "0009") + " : [970219 이런 형식으로]");
+				this.birthday = scan.nextLine();
+				if(Pattern.matches(birthReg,this.birthday)) {
+					break;
+				} else {            
+				    System.out.println("올바른 생일 형식이 아닙니다. ");
+				}
+			}
+			
+			while(true) {
+				System.out.println(message(room.language, "0025") + " " + message(room.language, "0009") + " : [하이픈 제외]");
+				this.phonenumber = scan.nextLine();
+				if(Pattern.matches(phoneReg,this.phonenumber)) {
+					break;
+				} else {            
+				    System.out.println("올바른 번호 형식이 아닙니다. ");
+				}
+			}
+			
+			AccountData ac = new AccountData(id, name, password, birthday, phonenumber);
 			account.put(id, ac);
 		}
 		System.out.println(message(room.language, "0011"));
@@ -89,6 +139,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 	}
 	//업데이트
 	public void update(AccountData ac){
+		load();// 수정.
 		this.account.remove(ac.getId());
 		account.put(ac.getId(), ac);
 		save();
@@ -122,7 +173,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 		// TODO Auto-generated method stub
 		
 	}
-	@Override
+	
 	public void save(){
 		try {
 			fos = new FileOutputStream(file);
@@ -130,6 +181,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 			out = new ObjectOutputStream(bos);
 			
 			out.writeObject(account);
+			System.out.println("save success");/////
 		} catch (Exception e) {
 			System.out.println(e);
 		}finally {
@@ -142,7 +194,7 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 			}
 		}
 	}
-	@Override
+	
 	public void load() {
 		//역질렬화로 계정을 정보를 읽음.
 
@@ -150,7 +202,6 @@ public class AccountSystem extends ReturnMessage implements SerializableInterfac
 			// 파일이 없을경우 생성.
 			if (!file.exists())
 				file.createNewFile();
-
 				fis = new FileInputStream(file);
 //				if (fis.read() == -1) {
 				if (fis.getChannel().size() == 0) {
