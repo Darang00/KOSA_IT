@@ -1,0 +1,14 @@
+/* 먼저 날짜 포멧을 [연도-월-일-요일] 나오도록 바꾸고 시작한다 */
+alter session set nls_date_format = 'YYYY-MM-DD-DAY';
+
+/* 10월부터 12월 사이에 입사한 사원들 정보 */
+select * from emp where regexp_like(HIREDATE ,'^\d+[-|/]1[0-2]{1}.*$'); 
+--결과: SMITH, SCOTT, KING, JAMES, FORD
+
+/*01~09월 사이에 주말에 입사한 사원들 정보*/
+select * from emp where regexp_like(HIREDATE ,'^\d+[-|/]0[1-9]{1}+[-|/]\d+[-|/]+[토요일|일요일]*$'); 
+--결과: WARD, MILLER
+
+/*1981년 주중에 입사한 사원들 정보*/
+select * from emp where regexp_like(HIREDATE ,'^[1981]+[-|/]\d+[-|/]\d+[-|/]+[월|화|수|목|금]+[요일].*$'); 
+--결과: ALLEN, JONES, MARTIN, BLAKE, CLARK, KING, TURNER
