@@ -10,9 +10,9 @@ https://www.oracle.com/technetwork/database/enterprise-edition/downloads/index.h
 
 3. Oracle 설치(SYS, SYSTEM 계정의 대한 암호 : 1004)
 
-4.Sqlplus 프로그램 제공(CMD) : GUI 환경 일반개발자 사용 불편
+3. Oracle 설치(SYS, SYSTEM 계정의 대한 암호 : 1004)
 
-5.별도의 Tool 설치 무료(SqlDeveloper , https://dbeaver.io/)  ,
+4.별도의 Tool 설치 무료(SqlDeveloper , https://dbeaver.io/)  ,
                  유료(토드 , 오렌지 , SqlGate) 프로젝트시 설치 활용 ^^
 
 6. SqlDeveloper 툴을 통해서 Oracle Server 접속 ....
@@ -179,7 +179,7 @@ select empno, ename
 from emp
 where ename ='KING';
 
-/*
+/* 중요
 select  절  3번
 from 절     1번
 where 절    2번
@@ -251,4 +251,111 @@ select 100 || 100 from dual; --100100
 select '100' + 100 from dual; --'1234' 숫자형 문자 (형변환 가능) ***** ' ' 벗기면 숫자 되는 문자
 select 'A100' + 100 from dual; --못더함(에러): ORA-01722: invalid number
 
+show user;
 
+--비교 연산자
+--<   >   <=
+--주의
+--java 같다 (==) 할당(=) , javascript (==, ===)
+--oracle 같다(=) 같지 않다(!=)
+
+--논리연산자
+--AND, OR, NOT
+
+select empno, ename, sal
+from emp
+where sal >= 2000;
+
+--사번이 7788번인 사원의 사번, 이름, 직종, 입사일을 출력하세요
+select empno, ename, job, hiredate         --3
+from emp                                   --1 (실행순서)
+where empno =7788;                         --2
+
+--개발자 : CRUD (Creat, Read, Update, Delete)
+-- >> Creat(insert), Read(select), Update, delete
+-- DB 작업: Read(select) 70% 비중, 가장 중요
+
+--관리자 : 데이터의 백업과 복원, 장애(네트워크, 성능) 관리, 보완(사용자 권한, 암호화)
+--튜닝 (퀴리튜닝, 하드웨어) >> 문장튜닝 >> 시간을 줄이는 작업
+--설계 (모델러) : 설계(요구사항 정의, 분석) : erd
+
+--사원의 이름이 king인 사운의 사번, 이름, 급여 정보를 출력하세요
+select empno, ename, sal
+from emp
+where ename = 'KING'; --문자열 찾을 땐' ' 써야 하고 oracle은 엄격히 대소문자 구분한다
+
+--급여가 2000달러 이상이면서 직종이 manager인 사원의 모든 정보를 출력하세요
+select *
+from emp
+where sal>=2000 and job = 'MANAGER';
+
+--이상 , 이하  (=)
+--초과 , 미만  
+/*      AND    OR
+0 0      0     0
+0 1      0     1
+1 0      0     1
+1 1      1     1
+*/
+
+--급여가 2000달러 초과이면서 직종이 manager인 사원의 모든 정보를 출력하세요
+select *
+from emp
+where sal>2000 and job = 'MANAGER';
+
+--오라클 날짜 (DB 서버의 날짜)
+--오라클 날짜 (sysdate)
+select sysdate from dual;
+--22/09/27
+
+select * from nls_session_parameters; --시스템 테이블
+--현재 접속한 사용자(session)가 가지는 환경정보
+--NLS_DATE_FORMAT	RR/MM/DD
+--NLS_DATE_LANGUAGE	KOREAN
+--NLS_TIME_FORMAT	HH24:MI:SSXFF
+
+--일반적으로 2022-09-27 
+alter session set nls_date_format='YYYY-MM-DD HH24:MI:SS';
+
+select sysdate from dual; --2022-09-27 09:52:46
+--변경 정보는 현재 오라클 서버에 접속한 사용자의 작업 환경 설정
+--그래서 접속을 끊었다가 다시 연결하면 원래 상태로 복원되어 있다. (RR-MM-DD)
+
+select hiredate from emp;
+
+select *
+from emp
+where hiredate = '1980-12-17';
+
+/*
+모든 시스템은 날짜 필수 구성
+게시판
+설계
+글쓴이, 제목, 내용, 조회수, 작성날짜
+insert into board(writer, title, content, hit, regdate)
+           values('홍길동', '처음방가', '졸립다', 0, sysdate)
+regdate: 컬럼의 데이터는 서버의 시간(DB 서버)
+--TIP) ms-sql : select getdate()
+       Mysql  : curdate(), curtime(), now(), sysdate()
+*/
+
+select *
+from emp
+where hiredate = '1980/12/17';  -- /인정
+
+select *
+from emp
+where hiredate = '1980.12.17';  -- .인정
+
+select *
+from emp
+where hiredate = '1980,12,17';  -- ,인정
+
+select *
+from emp
+where hiredate = '80/12/17';   --안돼요 현재 format (yyyy-MM-dd)
+
+--사원의 급여가 2000이상이고 4000이하인 모든 사람의 정보를 출력하세요
+select *
+from emp
+where sal>=2000 and sal<=4000;
