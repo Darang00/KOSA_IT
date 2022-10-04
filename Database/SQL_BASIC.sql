@@ -2949,7 +2949,29 @@ select empno, ename from emp where deptno = 30
 create table sdept
 as select * from dept;
 
+/*
+전체조회, 조건조회, 삽입, 삭제, 수정
+*/
+
+--전체조회
 select * from sdept;
+
+--조건조회
+select * from sdept where deptno = 30;
+
+--삽입
+insert into sdept (DEPTNO, DNAME, LOC) values(50, 'FINANCIAL', 'CALIFORNIA');
+--select * from sdept; (OK)
+
+--삭제
+delete from sdept where LOC = 'DALLAS';
+--select * from sdept;
+--rollback;
+
+--수정
+update sdept set DNAME = 'IT' where DEPTNO = 40;
+--select * from sdept;
+--rollback;
 
 
 
