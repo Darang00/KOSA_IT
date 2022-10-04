@@ -946,7 +946,7 @@ insert into test2(name) values('a');
 insert into test2(name) values('aa');
 insert into test2(name) values('가'); --한글 1자 3byte 인지
 -------------------------------------------------------------------------------
-?--일반함수 (프로그램 성격이 가장 강한 함수)
+--일반함수 (프로그램 성격이 가장 강한 함수)
 --nvl(), nvl2() >> null 처리하는 함수
 --decode() >> jaba if 문
 --case() >> java의 switch 문
@@ -1086,7 +1086,7 @@ from emp;
 1. count(*) >> row수, count(컬럼명) >> 데이터 건수 > (null은 포함하지 않아요)
 2. sum()
 3. ave()
-4. mac()
+4. max()
 5. min()
 --기타
 
@@ -1158,6 +1158,7 @@ from emp
 group by deptno, job;
 
 /*
+<실행순서>
 select 절        4
 from 절          1
 where 절         2
@@ -1174,6 +1175,7 @@ having avg(sal) >=3000;       --group by 조건절
                               --having 절에서는 select에서 설정한 가명칭 사용하지 못한다(실행순서 때문에)
                               
 /*
+<실행순서>
 1. from의 조건절 where
 2. group by 조건절 having
 select   6
@@ -2611,3 +2613,343 @@ show user;
 select * from employees;
 select * from departments;
 select * from locations;
+
+--------------------------------------------------------------------------------
+--개발자 관점에서 SQL
+--오라클.pdf (p177 page)
+
+/*
+SEQUENCE (자동으로 번호를 생성하는 객체)
+채번하기, 번호 추출기
+
+
+CREATE SEQUENCE sequence_name
+[INCREMENT BY n]
+[START WITH n]
+[{MAXVALUE n | NOMAXVALUE}]
+[{MINVALUE n | NOMINVALUE}]
+[{CYCLE | NOCYCLE}]
+[{CACHE | NOCACHE}];
+
+sequence_name SEQUENCE 의 이름입니다.
+INCREMENT BY n 정수 값인 n 으로 SEQUENCE 번호 사이의 간격을 지정.
+이 절이 생략되면 SEQUENCE 는 1 씩 증가.
+START WITH n 생성하기 위해 첫번째 SEQUENCE 를 지정.
+이 절이 생략되면 SEQUENCE 는 1 로 시작.
+MAXVALUE n SEQUENCE 를 생성할 수 있는 최대 값을 지정.
+NOMAXVALUE 오름차순용 10^27 최대값과 내림차순용-1 의 최소값을 지정.
+MINVALUE n 최소 SEQUENCE 값을 지정.
+NOMINVALUE 오름차순용 1 과 내림차순용-(10^26)의 최소값을 지정.
+CYCLE | NOCYCLE 최대 또는 최소값에 도달한 후에 계속 값을 생성할 지의 여부를
+지정. NOCYCLE 이 디폴트.
+CACHE | NOCACHE 얼마나 많은 값이 메모리에 오라클 서버가 미리 할당하고 유지
+하는가를 지정. 디폴트로 오라클 서버는 20 을 CACHE.
+
+*/
+
+desc board;
+drop table board;
+create table board(
+boardid number constraint pk_board_boardid primary key,
+title nvarchar2(50)
+);
+
+select*from board;
+--poardid (pk: not null, unique, 내부적으로 index 자동 생성)
+--where boardid = 10; 검색속도 향상
+
+--게시판 글쓰기 작업
+insert into board(boardid, title) values(1, '처음글');
+insert into board(boardid, title) values(2, '글');
+--처음 글은 1번이고 그 다음 글부터는 순차적으로 값을 insert...
+
+insert into board(boardid, title) 
+values(1, '1');
+
+insert into board(boardid, title) 
+values(2, '2');
+--hint) subquery
+--select boardid + 1
+select count(boardid) +1 from board;
+
+insert into board(boardid, title)
+values((select count(boardid) +1 from board), '1');
+
+insert into board(boardid, title)
+values((select count(boardid) +1 from board), '2');
+
+insert into board(boardid, title)
+values((select count(boardid) +1 from board), '3');
+
+select * from board;
+commit;
+--CRUD 관점에서
+--create (insert)
+--read (select)
+--타이핑 놓침.. 확인
+delete from board where boardid = 1;
+commit;
+--새 글...
+insert into board(boardid, title)
+values((select count(boardid) +1 from board), '4');
+--ORA-00001: unique constraint (SYSTEM.PK_BOARD_BOARDID) violated
+--DML 문제 발생
+select * from board;
+
+--다른 방법
+delete from board;
+commit;
+
+select * from board;
+--집계함수
+
+select nvl(max(boardid), 0) +1 from board; --subquery
+
+--오류 확인.. 놓쳤음..
+insert into board(boardid, title)
+values((select nvl(max(boardid), 0) +1 from board;  from board), '1');
+
+insert into board(boardid, title)
+values((select nvl(max(boardid), 0) +1 from board;  from board), '2');
+
+insert into board(boardid, title)
+values((select nvl(max(boardid), 0) +1 from board;  from board), '3');
+
+select * from board order by boardid;
+
+delete from board where boardid=1;
+commit;
+
+insert into board(boardid, title)
+values((select nvl(max(boardid, 0) +1 from board), '3');
+
+select * from board;
+commit;
+---글 번호에 대한 고민..... 순번...
+--sequence라는 객체 제공: 중복값이 없고 순차적인 값을 제공하는 객체
+
+create sequence board_num;
+
+select board_num.nextval from dual; --채번(번호 뽑는거..) 한 번 뽑힌거 다시 뽑히지 않음 
+
+select board_num.currval from dual; --현재까지 채번한 횟수를 확인할 수 있다(마지막 번호가 몇번인지 확인)
+
+/*
+1.4.1 NEXTVAL 과 CURRVAL 의사열 
+1) NEXTVAL 는 다음 사용 가능한 SEQUENCE 값을 반환 한다.
+2) SEQUENCE 가 참조될 때 마다, 다른 사용자에게 조차도 유일한 값을 반환한다.
+3) CURRVAL 은 현재 SEQUENCE 값을 얻는다.
+4) CURRVAL 이 참조되기 전에 NEXTVAL 이 사용되어야 한다.
+*/
+
+--게시판
+--게시판에 사용되는 채번기
+create table kboard(
+    num number constraint pk_kboard_num primary key,
+    title nvarchar2(20)
+);
+
+create sequence kboard_num;
+
+insert into kboard(num, title)
+values(kboard_num.nextval, '처음');
+
+insert into kboard(num, title)
+values(kboard_num.nextval, '둘이당');
+
+insert into kboard(num, title)
+values(kboard_num.nextval, '셋이당');
+
+select * from kboard;
+
+delete from kboard where num = 2;
+
+insert into kboard(num, title)
+values(kboard_num.nextval, '넷이당');
+commit;
+--------------------------------------------------------------------------------
+--1. 게시판을 만들거다
+--공지사항, 자유게시판, 관리자게시판 등등
+--공지사항 1.. 2.. 3..
+--자유게시판에 글 쓰면 4...
+--관리자 게시판 5.. 6..
+--공지사항 7..
+--1. sequence  객체는 공유객체 (테이블에 종속되지 않아요)
+--하나의 sequence는 여러 곳에서 자유롭게 사용 가능하다.
+--sequence 하나 생성해서 >> 공지사항, 자유게시판, 관리자 게시판 사용 가능
+
+--2. 웹사이트(게시판 10개)
+--상품 게시판, 관리자 게시판, 회원 게시판 ...
+--각각의 게시판은 순번을 따로 관리하길 원함
+--sequence 객체 10개 만들어서 각각 사용하면 돼요
+
+--TIP_)
+--Ms-SQL 서버: create table board(boardnum int identity(1, 1)...title --> table에 종속.. 그 table에서만 사용
+--insert into(title) values('Hello'); 자동(1, 2, 3, ...)
+--MS-SQL: 2012버전 (sequence) --> 모든  table에서 다 사용 가능
+
+--mysql: create table board(boardnum int auto_increment, ... title) --> table에 종속.. 그 table에서만 사용
+--insert into board(title) values('Hello'); 자동 (1, 2, 3, ...)
+
+--mysql 만든 사람들이 open source 로 만든거 >> mariadb (같은 엔진)
+--mariadb sequence 객체가 존재함 
+--http (확인...)
+
+--------------------------------------------------------------------------------
+--옵션
+ create sequence seq_num
+ start with 10
+ increment by 2;
+ 
+ select seq_num.nextval from dual;
+ select seq_num.currval from dual;
+ 
+ --게사판 글 100개
+ --num, title, writer, content
+ --1, 2, 3, .....100
+ --일반적으로 게시판 글 볼 때 (최신글) - 가장 나중에 쓰여진 글... 화면 출력
+ 
+ select * from kboard order by num desc; --일반 게시판 첫 쿼리
+ 
+ --개발자 관점
+ --rownum 의사 컬럼: 실제 물리적으로 존재하는 컬럼이 아니고 논리적으로 존재하는 컬럼
+ --rownum: 실제 테이블에 컬럼으로 존재하지 않지만 내부적으로 행에 번호를 부여할 수 있는 컬럼
+ 
+ select * from emp;
+ 
+select rownum as 순번, empno, ename from emp;
+
+select 한 결과에 순번을 부여 ...
+
+--Top-n 쿼리 (정렬된 기준으로 위에서 몇 개를 추출)
+--테이블에서 조건에 맞는 상위(Top)에서 레코드 (row) n개를 추출
+--TIP)
+--MS-SQL : select top 10, * from emp order by sal desc;
+
+--Oracle top n (X)
+--rownum 사용하여 top n 기능 구현 가능 : 순번을 부여하여 특정 조건에 맞게 top query  실행 가능
+--1. 정렬의 기준을 정의(선행)
+--2. 정렬된 데이터를 기준으로 rownum을 설정하고 조건을 걸고 데이터를 추출
+
+--1단계
+select * 
+from (
+    select * 
+    from emp
+    order by sal desc; --급여를 많이 받는 순서를 기준으로 정렬할거다
+    ) e; --subquery로 사용
+    
+--2단계 (오류났음 확인..) 
+select rownum as num, e.*  --정렬된 테이블 앞에 순번을 붙인다. e.*
+from (
+        select *
+        from emp
+        order by sal desc
+    ) e;
+    
+--3단계 (급여 많이 받는 사원 5명)
+select *
+from  (
+        select rownum as num, e.*
+        from (
+            select *
+            from emp
+            order by sal desc
+        )e
+    )n where num <=5;
+    
+--3단계 줄인거
+select *
+from (
+     select rownum as num, e.*
+     from emp e
+     order by sal desc
+     )n where num <=5;
+
+------------------------------------------------------------------------------------
+--게시판
+/*
+100건 웹사이트에 100건 데이터가 한 화면에 출력 가능
+10건씩 나누어서 화면에 출력
+
+pagesize = 10 (한 화면에 (페이지)에 보여줄 수 있는 데이터 row 수)
+page 개수 = 10개
+
+[1] [2] [3] [4] [5] [6] [7] [8] [9] [10] >> java 구현 >> a href = 'page.jsp?' > 10</a>
+1page >> 1~10 글  >> DB select 1~10번 글까지
+2page >> 11~20 글 >> DB select 11~20번 글
+
+>> rownum
+>> between A and B
+--------------------------------------------------------------------------------------
+--HR 계정 이동
+
+*/
+show user;
+--USER이(가) "HR"입니다.
+
+select * from employees ; --107건
+
+--1단계 (기준 데이터를 만들기 (정렬의 기준을 정의))
+--사번이 낮은 순으로 정렬
+
+select * from employees order by employee_id asc;
+
+--2단계 (기준 데이터에 순번 부여하기)
+select rownum as num, e.*
+from (
+    select * from employees order by employee_id asc
+    ) e
+where rownum <=50; --정렬된 데이터에 내부적으로 생성된 rownum 
+
+--3단계
+select * 
+from (
+        select rownum as num, e.*
+        from (
+            select * from employees order by employee_id asc
+            ) e
+        where rownum <=50 --정렬된 데이터에 내부적으로 생성된 rownum 
+    ) n where num >=41;
+--------------------------------------------------------------------------------
+--107건
+--pagesize = 10
+--[1] [2] [3] [4] [5] [6] [7] [8] [9] [10] [11]
+--[1]  >> 1~10
+--[2]  >> 11~20
+--[5]  >> 41~50 데이터를 보여주세요
+--[10] >> 91~100
+--[11] >> 101~107
+select * 
+from (
+        select rownum as num, e.*
+        from (
+            select * from employees order by employee_id asc
+            ) e
+        where rownum <=10 --정렬된 데이터에 내부적으로 생성된 rownum 
+    ) n where num >=1;
+    
+--where rownum between 1 and 10
+--servlet & jsp 다시 수업
+--KOSA 계정에서
+create table dmlemp 
+as
+    select * from emp;
+    
+--제약 정보는 복사가 안돼요
+select * from dmlemp;
+alter table dmlemp
+add constraint pk_dmlemp_empno primary key(empno);
+
+select * from user_constraints where table_name = 'DMLEMP';
+
+
+select empno, ename from emp where deptno = 30
+
+create table sdept
+as select * from dept;
+
+select * from sdept;
+
+
+
