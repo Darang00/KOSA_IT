@@ -2972,6 +2972,56 @@ delete from sdept where LOC = 'DALLAS';
 update sdept set DNAME = 'IT' where DEPTNO = 40;
 --select * from sdept;
 --rollback;
+---------------------------------------------22.10.05----------------------------
+create table trans_A(
+    num number,
+    name varchar2(20)
+);
+
+create table trans_B(
+    num number constraint pk_trans_B_num primary key,
+    name varchar2(20)
+);
+
+insert into trans_A(num, name) values(100, 'A');
+insert into trans_B(num, name) values(100, 'B');
+
+commit;
+
+select * from trans_A;
+select * from trans_B;
+
+drop table trans_B;
+commit;
+--------------------------------------------------------------------------------
+/*JDBC 조별과제 EMP 테이블에서 
+전체조회, 
+조건조회(where empno = 7788), 
+삽입(insert(into emp(...) values(...), 
+삭제(delete from emp where empno = 7788), 
+수정(update emp set ename = ?, job=?, sal = ?, hiredate = ?, where empno = ?     */
+--전체조회
+select * from emp;
+--조건조회
+select * from emp where empno = 7788;
+--삽입
+insert into emp (EMPNO, ENAME, JOB) values(0000, 'DAYEONG', 'ENGINEER');
+rollback;
+--삭제
+delete from emp where ename = 'SMITH';
+rollback;
+--수정
+update emp set ename = 'DAYEONG', job='ENGINEER', sal = 5000, hiredate = '22/10/05' where empno = 7788; 
+rollback;
+
+
+select empno, ename, deptno from emp where ename like '%DAYEONG%'
+
+drop table
+
+delete from emp where ename ='DAYEONG_up'
+
+commit;
 
 
 
