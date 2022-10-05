@@ -1,10 +1,11 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-/*
+/* 암기
  JDBC
  1. Java 언어 (APP)를 통해서 Oracle(소프트웨어)를 연결해서 CRUD 작업 할거다
  2. Java App: Oracle, My-sql, Ms-sql 등등 모든 데이터 베이스에 연결할 수 있고 작업할 수 있다 (CRUD)
@@ -65,6 +66,14 @@ public class Ex01_Oracle_Connection {
 		String sql = "select empno, ename, sal from emp";
 		
 		ResultSet rs = stmt.executeQuery(sql); //명령 실행
+		
+		/////////////////////////////////////////////////////////
+		ResultSetMetaData rsmd=rs.getMetaData();  
+		  
+		System.out.println("Total columns: "+rsmd.getColumnCount());  
+		System.out.println("Column Name of 1st column: "+rsmd.getColumnName(1));  
+		System.out.println("Column Type Name of 1st column: "+rsmd.getColumnTypeName(1));  
+		////////////////////////////////////////////////////////
 		
 		//rs를 통해서 DB서버 memory에 생성된 정보를 조회
 		//처리(화면조회)

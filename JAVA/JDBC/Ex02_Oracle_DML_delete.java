@@ -17,9 +17,9 @@ update emp set sal=100 where empno=4444> update 0건 >> return 0
 
 결과를 가지고 java코드로 로직처리
 KET POINT
-1. Oracle DML(developer, Cmd(sqlplus), tool) 하면 commit or rollback강제
+1. Oracle DML(developer, Cmd(sqlplus), tool) 하면 commit or rollback 강제
 2. JDBC API 사용해서 java 코드를 통해서 DML >> default >> autocommit; >> 실반영
-3. JDBC API 통해서 delete from emp >> 실행 >> 자동 commit> 실반영
+3. JDBC API 통해서 delete from emp >> 실행 >> 자동 commit >> 실반영
 4. 필요에 따라 commit(), rollback 처리 코드...
 
 begin
