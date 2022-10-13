@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <p Scope></p> //확인..
+    <p id="demo1"></p> 
+    <p id="demo2"></p>
+    <p id="demo3"></p>
+    <p id="demo4"></p>
+</body>
+<script type="text/javascript">
+    //script 블럭 내에 선언된 변수: global variable (모든 함수에서 적용 가능; 그 페이지 내에서)
+    var gname="world";
+
+    myFunction();
+    function myFunction(){
+        //함수 안에 구현 (local variable)
+        aaa="Jalil"; //변수로 인정 //근데 type 이 없는 변수로 선언하면 global variable //하지마세요
+        console.log("aaa: " + aaa);
+
+        var carname="Volve"; //local...
+        document.getElementById("demo1").innerHTML = typeof(carname) + "" + carname + "<hr>";
+        document.getElementById("demo2").innerHTML = typeof(gname) + "" + gname + "<hr>";
+    }
+    console.log(aaa);
+</script>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <!--
+        함수를 생성하시고 oncllick="" 함수 호출시
+        value="200-300 서울시 강남구 역삼동" 값을 가지고 와서
+        우편번호와 주소 분리
+        200-300
+        서울시 강남구 역삼동
+        부모창에: window.opener 통해서 zipcod, addr 에 값 전달
+        그리고 현재 창 닫음
+    -->
+
+    <script type="text/javascript">
+    function zipSearch(obj){
+   console.log(obj) //obj.value
+
+   //우편번호, 주소 분리
+   let zip = obj.substring(0, 7); //200-300
+   let addr = obj.substr(8);
+   console.log(zip+"/" +addr);
+
+   //부모창, 자식창
+   //부모창에서 자식창을 opern
+   //자식창 입장에서는 부모창을 opener(부모창 객체)
+
+   window.opener.mainform.zipcode.value=zip;
+   opener.mainform.addr.value = addr;
+   //현재창 닫기
+   window.close();
+
+}
+
+    </script>
+
+</head>
+<body>
+    <h3>DB연결 검색한 결과 출력된 화면(선택)</h3>
+	<form action="" name="zipform">
+		<input type="button" value="200-300 서울시 강남구 역삼동" name="btn" onclick=""><br>
+		<input type="button" value="200-400 경기도 성남시 삼평동" name="btn" onclick=""><br>
+		<input type="button" value="300-500 제주시 서귀포동"     name="btn" onclick=""><br>	
+	</form>
+​ 
+</body>
+</html>
