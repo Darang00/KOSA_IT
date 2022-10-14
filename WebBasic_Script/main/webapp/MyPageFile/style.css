@@ -15,14 +15,41 @@ h1{
 
 .contents{
     font-size: 45px;
-    font-weight: lighter;
+    font-weight: normal; /* font-weight: 글자 굵기 조절하는 속성 */
+}
+
+.contents1{
+    font-size: 25px;
+}
+.contents1_bold{
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 0.75px;
+}
+
+.contents2{
+
+}
+
+.contents3{
+    font-size: 14px;
+    font-weight: 100; /* 100이라는 '수치', '100px' 아니고 */
+}
+
+.result{
+   font-size: 32px; 
+   font-size: border;
 }
 
 .intro_bg{
     background-image:url("image/Lisbon.jpg");
     width:100%;
     height:1110px;
+    background-size: cover; /* 화면 확대 및 축소해도 배경 사징 여러개 안나오고 고정됨. 다른 요소들 크기만 변함 */
 }
+/* #lisbonpic{
+    width : 100%;
+} */
 
 .header{
     display:flex;
@@ -77,29 +104,31 @@ h1{
 }
 
 .amount{
-    position: relative;
-    top: -66px;
+    position: relative; /* 현재 위치 */
+    top: -66px; /*위에서 선언한 '현재위치'에서 위로 66만큼! ('-' 가 '위로' 의미) */
     display:flex;
     width: 1280px;
-    background: rgb(255, 0, 0);
+    background: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2); /* 앞에 px 3개는 좌, 아래, 우의 그림자 크기, rgba는 그림자 색이랑 흩뿌려지는 정도 */
     margin: auto;
-}
-
-.amount > li > div{
-    text-align: center;
-    background: green;
-    margin-top: 37px;
-    height: 57px;
-}
-
-.amount > li: not(:last-child) > div{
-    border-right: 1px solid gray;
 }
 
 .amount > li {
     flex: 1;
     height: 132px;
-    background: rgb(177, 177, 255);
+    /* background: rgb(177, 177, 255); */
+}
+
+.amount > li > div{
+    text-align: center;
+    /* background: green; */
+   /* border-right: 1px solid gray; */
+    margin-top: 37px;
+    height: 57px;
+}
+
+.amount > li:not(:last-child) > div{ /* 마지막 칸 제외하고(예외처리) */ /* li랑 not 사이에 : 쓸 때 띄어쓰기 하면 안된다. 에러난다*/
+    border-right: 1px solid #ababab7e; /* 'border'는 테두린데, right, 즉 오른쪽변만 표시하겠다 */
 }
 
 .intro_text{
@@ -114,3 +143,68 @@ h1{
     color:#fff;
 }
 
+/* main_text0 */
+.main_text0{
+    width: 100%;
+    height: 601px;
+    margin-top: -132px;
+    background: rgba(138, 200, 255, 0.515);
+}
+
+.main_text0 > h1{
+    padding-top: 116px;
+    text-align: center;
+    /* background:skyblue; */
+    
+}
+
+.main_text0 > .contents1{
+    text-align: center;
+}
+
+.icons{
+    display: flex;
+    width: 1280px;
+    height: 302px;
+    /* background: orange; */
+    margin: auto;
+}
+
+.icons > li{
+    flex: 1;
+    background: white;
+    margin-top: 49px;
+    height: 302px;
+    text-align:center;
+    
+}
+
+.icons > li > .icon_img{
+    margin-top: 35px;
+}
+
+.icons > li > .icon_img > img{
+    width: 30%;
+    height: 30%;
+}
+
+.icons > li:not(:last-child){
+    margin-right: 20px;
+}
+
+.icons .contents2{
+    font-size: 22px;
+    width: auto;
+    margin:auto;
+    letter-spacing: 0px;
+}
+
+.more{
+    width:100px;
+    height: 30px;
+    background:rgba(246, 98, 0, 0.946);
+    color: #fff;
+    margin: 25px auto;
+    line-height: 30px;
+    font-size: 20px;
+}
