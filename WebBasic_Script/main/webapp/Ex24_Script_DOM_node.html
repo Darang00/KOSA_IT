@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload=function(){
+            //DOM 객체 자원....
+            //모든 자원에 대한 사용이 가능...
+
+            //계층 트기 (node 개념 접근: 부모, 자식, 형제 개념)
+            let mnenode;
+            menode=document.getElementById("me");
+            menode.style.backgroundColor="gold";
+
+            let parentnode = menode.parentNode; //body
+            parentnode.style.backgroundColor="green";
+
+            let grandnode = parentnode.parentNode; //html
+            grandnode.style.backgroundColor="blue";
+
+            let my = document.getElementById("mychild");
+            console.log(my);
+            console.log(my.firstChild.nodeName); //Li
+            console.log(my.firstChild.innerText); //Li > AA
+            //innerHTML, innerText >> value 없는 친구 >> p, div, li, span ..
+            //BB 라는 Text 값을 가지고 오고 싶어요
+            console.log(my.firstChild.nextSibling.innerText); //BB
+
+            console.log(my.childNodes);
+            //질문: my.childNodes return type >> Array ^^
+            //[<li>AA</li>][<li>BB</li>][<li>CC</li>]
+            console.log(my.childNodes[0]);
+            console.log(my.childNodes.length);
+
+            
+
+
+        }
+    </script>
+</head>
+<body>
+    <div>A</div><div>B</div><div id="me">C</div><div>D</div><div>E</div>
+    <ul id="mychild"><li>AA</li><li>BB</li><li>CC</li></ul>
+    
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript">
+        window.onload = function(){
+            let myphotos = ["images/1.jpg", "images/2.jpg", "images/3.jpg", "images/4.jpg"];
+        
+            //Quiz
+            //a click 이벤트 처리하시고
+            //[0]   [1]   [2][3]
+            //images/1.jpg images/2.jpg...
+            //다음 링크를 클릭하면 다음 image를 보여줘요
+            //이전 링크를 클릭하면 이전 image를 보여줘요
+
+            let currentIdx = 0; //슬라이드 현재 번호
+            console.log("index: " + index);
+            let translate = 0; //슬라이드 위치 값
+            document.getElementById("prv").addEventListener("click", function(){
+                if(index == 0){
+                    index = myphotos.length;
+                }
+                document.getElementById("imgs").src = myphotos[--index];
+            });
+
+            document.getElementById("next").addEventListener("click", function(){
+                //
+                if(++index == myphotos.length){
+                    //index 4 == 4개 방
+                    //index 초기화
+                    index = 0;
+                }
+            })
+
+            
+
+        }
+
+    </script>
+</head>
+<body>
+    <h3>DOM Slide</h3>
+    <div class="kind_wrap">
+        <div class="kind_slider">
+            <ul class="slider">
+
+        <li><img src = "images/1.jpg" alt = "이미지" id="imgs" width = "200" height = "200"></li>
+        <li><img src = "images/2.jpg" alt = "이미지" id="imgs" width = "200" height = "200"></li>
+        <li><img src = "images/3.jpg" alt = "이미지" id="imgs" width = "200" height = "200"></li>
+        <li><img src = "images/4.jpg" alt = "이미지" id="imgs" width = "200" height = "200"></li>
+    <hr>
+    <div class="arrow">
+    <a href = "#" id = "prv">PREVIOUS</a>||<a href = "#" id = "next">NEXT</a>
+    </div>
+</ul>    
+</div>
+</div>
+</body>
+</html>

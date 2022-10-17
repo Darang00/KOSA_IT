@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event 주의 사항</title>
+    <script type="text/javascript">
+        function displayDate(){
+            console.log("call");
+            document.getElementById("demo").innerHTML = new Date();
+        }
+
+
+        //TEST1
+        //script 블럭
+        //document.getElementById("mybtn").onclick = displayDate();
+        //실행순서 때문에... body 안에 요소가 메모리에 없어요...
+
+        window.onload=function(){
+            console.log("load...");
+        }
+
+    </script>
+</head>
+<body>
+    <button id="mybtm">Click me</button>
+    <br>
+    <button id="mybtn2" onclick="">Click me 2</button>
+    <br>
+    <p id="demo"></p>
+    
+</body>
+<script type = "text/javascript">
+    //document.getElementById("mybtn").onclick = displayDate();
+    //버튼을 클릭하기 전에 ... displayDate() 가 호출되어 버림..
+    //특급 주의 사항 ...
+    document.getElementById("mybtn").onclick = displayDate;
+    // (괄호) 빼버린다!!! >> 클릭할 때만 호출됨
+
+
+</script>
+</html>

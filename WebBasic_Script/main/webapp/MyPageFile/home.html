@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en">
+    
     <head>
         <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
         <link rel = "stylesheet" type="text/css" href="style.css">
 
     </head>
     <body>
+        <div id="map-canvas"></div>
         <div class="wrap">
             <div class="intro_bg">
-                <div class="header">
+                <div class="header" id="link_header">
                     <div class="searchArea">
                         <form>
                             <input type="search" placeholder="Search">
@@ -16,10 +18,10 @@
                         </form>
                     </div>
                     <ul class="nav">
-                        <li><a href = "#">HOME</a></li>
-                        <li><a href = "#">ABOUT</a></li>
-                        <li><a href = "#">SERVICE</a></li>
-                        <li><a href = "#">CONTACT</a></li>
+                        <li><a href = "#link_header">HOME</a></li>
+                        <li><a href = "#link_header_main_text0">ABOUT</a></li>
+                        <li><a href = "#link_header_main_text1">SERVICE</a></li>
+                        <li><a href = "#link_header_main_text2">CONTACT</a></li>
 
                     </ul>
                     
@@ -61,9 +63,9 @@
             <!-- amount end -->
 
 
-            <div class="main_text0">
+            <div class="main_text0" id="link_header_main_text0">
                 <h1>ABOUT</h1>
-                <div class="contents1">I'm not sunshine but wanna light up your world</div> <!--contents1 class 에서 선언한 폰트 디자인 갖다 쓰려고-->
+                <div class="contents1">Come take my arms and go, I'll be yours for sure</div> <!--contents1 class 에서 선언한 폰트 디자인 갖다 쓰려고-->
                 
                 <ul class="icons">
                     <li>
@@ -93,12 +95,102 @@
                 </ul>
             </div>
 
-            <div class="main_text1">
+            <div class="main_text1" id="link_header_main_text1">
                 <h1>SERVICE</h1>
                 <div class="contents1">I could be whatever I want</div>
                 <div class="service">
-                    <div class=""
+                    <div class="barcelona_pic">
+                        <img src = "image/barcelona3.jpg"></img>
+                    </div>
+                    <div class="contents2">
+                       <h2>Bunny</h2>
+                       <br>I am your bunny that you hold tight, wheh you go to sleep.
+                       <br>I'm your morning! I'm no sunshine but you say I light up your world, babe.
+                       <br>I'm your baby that you won't let go even if the world go down
+                       <br>Don't you worry, I'll be anything.
+                       <br>Is that you wanna hear? So call me anything
+                       <br>I could be everything to you
+                       <br>But at the same time I'd be nothing at all
+                       <br>Of course, now I'm very precious to you
+                       <br>but I will still be needing time to have faith into you
+                    </div>
                 </div>
+
+                <div class="main_text2" id = "link_header_main_text2">
+                    <ul>
+                        <li>
+                            <div><h1>CONTACT</h1></div> 
+                            <div><h2>If you have any query, never hesitate to ask :)</h2></div>
+                            <div class = "more2">About More</div>
+                        </li>
+                        <li>
+                            <div class="map" id="map-canvas">
+                                <script type="text/javascript">
+                                function getLocation(){
+                                    if(navigator.geolocation){
+                                        navigator.geolocation.getCurrentPosition(locationSuccess, locationError, geo_options);
+                                    }else{
+                                        console.log("지오 로케이션 없음")
+                                    }
+                                };
+                                // getLocation
+                                var latitude, longitude;
+                                function locationSuccess(p){
+                                    latitude = p.coords.latitude,
+                                    longitude = p.coords.longitude;
+                                    initialize();
+                                }
+                                // locationSuccess
+                                function locationError(error){
+                                    var errorTypes = {
+                                        0 : "무슨 에러냥~",
+                                        1 : "허용 안눌렀음",
+                                        2 : "위치가 안잡힘",
+                                        3 : "응답시간 지남"
+                                    };
+                                    var errorMsg = errorTypes[error.code];
+                                }
+                                // locationError
+                                var geo_options = {
+                                  enableHighAccuracy: true,
+                                  maximumAge        : 30000,
+                                  timeout           : 27000
+                                };
+                                // geo_options
+                                var map;
+                                function initialize() {
+                                    var myLatLng = new google.maps.LatLng(latitude, longitude);
+                                    var mapOptions = {
+                                        zoom: 16,
+                                        center: myLatLng
+                                    };
+                                    var image = './images/Luffys-flag-icon.png';
+                                    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+                                    var beachMarker = new google.maps.Marker({
+                                        position: myLatLng,
+                                        map: map,
+                                        icon: image
+                                    });
+                                    //html 문서안에 map-canvas 엘리먼트에 맵을 그리라고 하는 것임
+                                }
+                                //google.maps.event.addDomListener(window, 'load', initialize);
+                            </script>
+                            </div>
+
+                        </li>
+                    </ul>
+
+                </div>
+                <footer>
+                    <div>
+                        LOGO
+                    </div>
+                    <div>
+                        Address: 254-Changgyeonggung-ro, Jongno-gu, Seoul <br>
+                        Tel: 010-0000-0000 <br>
+                        E-mail: 201901427a@inu.ac.kr
+                    </div>
+                </footer>
             </div>
 
         </div>

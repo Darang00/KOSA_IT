@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script type="text/javascript">
+
+    /* https://www.w3schools.com/js/js_htmldom_eventlistener.asp 
+    
+    element.addEventListener(event, function, useCapture);
+    removeEventListener()
+    
+    */
+
+    
+    </script>
+</head>
+<body>
+    <button id="mybtm">Click</button>
+    <p id="demo"></p>
+    
+</body>
+    <script type="text/javascript">
+        //1. 하나의 요소는 여러개의 event 를 가질 수 있다.
+        //2. 이벤트가 더 이상 필요하지 않다면 removeEventListener() 제거 가능 (단 addEvent 추가)
+
+        document.getElementById("mybtn").addEventListener("click", displayText);
+       // document.getElementById("mybtn").addEventListener(type, function(e), capture);
+
+        function displayText(){
+            document.getElementById("demo").innerHTMNL = "Hello Dayeong :)";
+        }
+    </script>
+</html>

@@ -28,7 +28,7 @@ h1{
 }
 
 .contents2{
-
+    font-size: 20px;
 }
 
 .contents3{
@@ -226,7 +226,91 @@ h1{
 .service{
     width: 1280px;
     display: flex;
-    margin: auto;
+    margin: 49px auto;
     height: 427px;
-    background: skyblue;
+    /* background: skyblue; */
+}
+
+.barcelona_pic {
+    padding-right: 20px;
+}
+
+.barcelona_pic > img{
+    width: 100%;
+    height: 100%;
+    
+}
+
+.service > contents2 {
+    padding: 20px;
+}
+
+.service > contents2 > h2{
+    margin-bottom: 27px;
+}
+
+/* main_text2 */
+.main_text2 {
+    background-image: url("image/LisbonBeach.jpg");
+     width:100%;
+    height:650px;
+    background-size: cover;
+}
+
+.main_text2 > ul{
+    display: flex;
+    padding-top: 38px;
+}
+
+.main_text2 > ul > li{
+   flex: 1;
+   text-align: center;
+}
+
+.main_text2 > ul > li > div > h1,
+.main_text2 > ul > li > div > h2 {
+    color: #fff;
+    letter-spacing: 0.75px;
+}
+
+.more2{
+    width: 220px;
+    height: 40px;
+    border: 2px solid rgba(255, 255, 255, 0.507);
+    line-height: 40px;
+    cursor: pointer;
+    margin: 16px auto;
+}
+
+footer{
+    font-size: 18px;
+    display: flex;
+    background: black;
+}
+
+footer > div:first-child{
+    padding-top: 15px;
+    padding-bottom: 15px;
+    flex: 3;
+    text-align: center;
+    color: #fff;
+}
+
+footer > div:last-child{
+    letter-spacing: 0.75px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    flex: 9;
+    color: #ffff;
+
+}
+
+/*기억하자: class: '.'  id: '#' 로 선언 */
+#link_header{
+
+}
+
+.map{
+    width: 50%;
+    height: 500px;
 }
