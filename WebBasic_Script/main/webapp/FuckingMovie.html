@@ -17,24 +17,9 @@
         };
 
     </style>
-</head>
-<body>
-<h1>Today's movie list</h1>
-<table id = "api">
-    <thead>
-        <tr>
-           <th>순위</th>
-           <th>영화 제목</th>
-           <th>개봉일</th>
-        </tr>
 
-    </thead>
-
-
-</table>
-
-</body>
-<script type = "text/javascript">
+<script>
+    
     let data = 
     {
     "boxOfficeResult":{
@@ -245,20 +230,47 @@
     }
 }
 
-console.log(data); //data에 정보 들어간 것 확인
 
-$.getJSON(url,function(res){
-                        let movie = res.movieInfoResult.movieInfo;
-                        d.append("<hr>");
-                        d.append("순위 : "+date.openDt+"<br>");
-                        d.append("영화제목 : "+date.movieNm+"<br>");
-                        d.append("개봉일 : "+date.openDt+"<br>");
-                        d.append("<hr>");
 
-                    })
+let list = data["boxOfficeResult"]["dailyBoxOfficeList"];
+
+// console.log("data[boxOfficeResult].boxofficeType" + data["boxOfficeResult"].boxofficeType);
+
+// console.log("data[boxOfficeResult]");
+// console.log(data["boxOfficeResult"]);
+
+
+
+for(let index in list){
+    let tr = document.createElement('tr');
+    let td = document.createElement('td');
+    td.innerHTML = list[index].rnum;
+    tr.appendChild(td);  
+    table.appendChild(tr);
+    console.log(td);    
+    console.log(tr);
+}
+// console.log(list[0]);
+
+
+
 
 
 
 
 </script>
+
+</head>
+<body>
+  
+<table>
+    <tr>
+        <th>순위</th>
+        <th>영화 제목</th>
+        <th>개봉일</th>
+    </tr>
+  
+</table>
+</body>
+
 </html>
