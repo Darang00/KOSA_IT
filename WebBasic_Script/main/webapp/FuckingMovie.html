@@ -19,6 +19,9 @@
     </style>
 
 <script>
+      window.onload = function(){
+     let table = document.querySelector('table');
+
     
     let data = 
     {
@@ -239,16 +242,30 @@ let list = data["boxOfficeResult"]["dailyBoxOfficeList"];
 // console.log("data[boxOfficeResult]");
 // console.log(data["boxOfficeResult"]);
 
+let tdRank;
+let tdMovieNm;
+let tdOpenDt;
 
+let square = document.getElementById("table");
 
 for(let index in list){
+console.log(list[index]);
     let tr = document.createElement('tr');
-    let td = document.createElement('td');
-    td.innerHTML = list[index].rnum;
-    tr.appendChild(td);  
-    table.appendChild(tr);
-    console.log(td);    
-    console.log(tr);
+
+    tdRank = document.createElement('td');   
+    tdRank.innerHTML = list[index].rank;
+
+    tdMovieNm = document.createElement('td');
+    tdMovieNm.innerHTML = list[index].movieNm;
+
+    tdOpenDt = document.createElement('td');
+    tdOpenDt.innerHTML = list[index].openDt;
+    
+    tr.appendChild(tdRank); 
+    tr.appendChild(tdMovieNm); 
+    tr.appendChild(tdOpenDt); 
+
+    square.appendChild(tr);
 }
 // console.log(list[0]);
 
@@ -257,19 +274,18 @@ for(let index in list){
 
 
 
-
+}
 </script>
 
 </head>
 <body>
   
-<table>
+<table id="table">
     <tr>
         <th>순위</th>
         <th>영화 제목</th>
         <th>개봉일</th>
     </tr>
-  
 </table>
 </body>
 
