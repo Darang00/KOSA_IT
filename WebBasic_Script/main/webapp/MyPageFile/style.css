@@ -285,7 +285,7 @@ h1{
 footer{
     font-size: 18px;
     display: flex;
-    background: black;
+    background: rgb(35, 89, 159);
 }
 
 footer > div:first-child{
