@@ -7,8 +7,6 @@
   //3. session
   //4. application
   
-  //5. out (출력 담당 객체)
-  
   //1.한글처리
       request.setCharacterEncoding("UTF-8"); //POST 전송....
   //2.데이터 받기 
