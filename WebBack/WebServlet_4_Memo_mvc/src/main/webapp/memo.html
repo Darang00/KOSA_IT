@@ -15,14 +15,16 @@
 			 document.getElementById("message").addEventListener("click",function(){ 
 				 /*getElementById 함수
 				 태그에 있는 id 속성을 사용하여 해당 태그에 접근하여 하고 싶은 작업을 할 때 쓰는 함수
-				 주어진 id와 일치하는 dom 요소를 나타내는 Element 객체를 반환하거나 주어진 id와 일치하는 dom 요소가 없으면 null을 return */
+				 주어진 id와 일치하는 dom 요소를 나타내는 Element 객체를 반환하거나 
+				 주어진 id와 일치하는 dom 요소가 없으면 null을 return */
 				 
-				 //
+				 
 				 let data =document.getElementById("id").value; //.value는 모지?
 				 //senddata(data)
 			      console.log(data); 
-				 // console.log()함수
-				 //이미 정의된 모든 종류의 변수를 출력하거나 사용자에게 표시되어야 하는 메시지를 출력하는데 사용되는 javascript 함수
+				 /* console.log()함수
+				 이미 정의된 모든 종류의 변수를 출력하거나 사용자에게 표시되어야 하는 메시지를 출력하는데 사용되는 
+				 javascript 함수 */
 
 			      sendData(data);
 			 });
@@ -63,7 +65,7 @@
 		}
 		function sendData(data){
 			httpReq = getInstance();
-			httpReq.onreadystatechange = handlerStateChange;  // x >> ()
+			httpReq.onreadystatechange = handlerStateChange;  // x >> () //handlerStateChange함수 바로 실행시키면 안돼서 () 없고, 대기만 하고 있다.
 			httpReq.open("POST","MemoId?id="+data); //<form 태그 구성 method=  action=
 			httpReq.send(); // form submit 버튼 클릭
 		}

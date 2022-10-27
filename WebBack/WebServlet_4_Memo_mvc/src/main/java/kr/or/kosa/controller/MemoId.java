@@ -38,7 +38,7 @@ public class MemoId extends HttpServlet {
     	//out.print("true");
     	
     	request.setCharacterEncoding("UTF-8");
-    	response.setContentType("text/html;charset=UTF-8");
+    	response.setContentType("text/html;charset=UTF-8"); //외우자...
     	PrintWriter out = response.getWriter();
     	
     	String id = request.getParameter("id");
