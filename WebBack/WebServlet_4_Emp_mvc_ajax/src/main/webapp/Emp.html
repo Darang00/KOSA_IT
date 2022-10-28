@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Insert title here</title>
+	<style>
+body {
+	padding: 1.5em;
+	background: #f5f5f5
+}
+
+table {
+	border: 1px #a39485 solid;
+	font-size: .9em;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, .25);
+	width: 100%;
+	border-collapse: collapse;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+th {
+	text-align: left;
+}
+
+thead {
+	font-weight: bold;
+	color: #fff;
+	background: #73685d;
+}
+
+td, th {
+	padding: 1em .5em;
+	vertical-align: middle;
+}
+
+td {
+	border-bottom: 1px solid rgba(0, 0, 0, .1);
+	background: #fff;
+}
+
+a {
+	color: #73685d;
+}
+
+@media all and (max-width: 768px) {
+	table, thead, tbody, th, td, tr {
+		display: block;
+	}
+	th {
+		text-align: right;
+	}
+	table {
+		position: relative;
+		padding-bottom: 0;
+		border: none;
+		box-shadow: 0 0 10px rgba(0, 0, 0, .2);
+	}
+	thead {
+		float: left;
+		white-space: nowrap;
+	}
+	tbody {
+		overflow-x: auto;
+		overflow-y: hidden;
+		position: relative;
+		white-space: nowrap;
+	}
+	tr {
+		display: inline-block;
+		vertical-align: top;
+	}
+	th {
+		border-bottom: 1px solid #a39485;
+	}
+	td {
+		border-bottom: 1px solid #e5e5e5;
+	}
+}
+</style>
+	
+	<script type="text/javascript">
+	let httpReq=null;
+
+		window.onload = function(){
+			 document.getElementById("list").addEventListener("click",function(){ 
+				 /*getElementById 함수
+				 태그에 있는 id 속성을 사용하여 해당 태그에 접근하여 하고 싶은 작업을 할 때 쓰는 함수
+				 주어진 id와 일치하는 dom 요소를 나타내는 Element 객체를 반환하거나 
+				 주어진 id와 일치하는 dom 요소가 없으면 null을 return */
+
+				 let data =document.getElementById("empno").value; //.value는 모지?
+				 //senddata(data)
+			      
+				 /* console.log()함수
+				 이미 정의된 모든 종류의 변수를 출력하거나 사용자에게 표시되어야 하는 메시지를 출력하는데 사용되는 
+				 javascript 함수 */
+
+			     if(data ==""){
+			    	 sendDataTotal();
+			     } else{
+			    	 sendDataCon(data);
+			     }
+			
+			 })
+		}
+		
+		function getInstance(){
+			  if(window.XMLHttpRequest){
+				  httpReq = new XMLHttpRequest(); //현재 브라우져 XMLHttpRequest 내장
+			  }else if(window.ActiveXObject){ //IE6 이하   //지금 필요없어요
+				  httpReq = new ActiveXObject("Msxml2.XMLHTTP");
+			  }else{
+				 throw new Error("AJAX 지원하지 않습니다"); 
+			  }
+			return httpReq;  
+		}
+		function handlerStateChange(){
+			 if(httpReq.readyState == 4){ //1. 서버에서 응답이 왔다면
+				 if(httpReq.status >= 200 && httpReq.status < 300){
+					
+		  			document.getElementById("d").innerHTML = httpReq.responseText;
+
+		  				}
+				 }else{
+
+				 }
+			 }
+		
+		function sendDataCon(data){
+			httpReq = getInstance();
+			httpReq.onreadystatechange = handlerStateChange;  // x >> () //handlerStateChange함수 바로 실행시키면 안돼서 () 없고, 대기만 하고 있다.
+			console.log(data);
+			httpReq.open("POST","EmpList?empno="+data); //<form 태그 구성 method=  action=
+			httpReq.send(); // form submit 버튼 클릭
+		}
+		
+		function sendDataTotal(){
+			httpReq = getInstance();
+			httpReq.onreadystatechange = handlerStateChange;  // x >> () //handlerStateChange함수 바로 실행시키면 안돼서 () 없고, 대기만 하고 있다.
+			httpReq.open("POST","EmpList"); //<form 태그 구성 method=  action=
+			httpReq.send(); // form submit 버튼 클릭
+		}
+	</script>
+
+</head>
+<body>
+
+<input type="text" value="" id="empno">
+	<input type="button" value="검색" id="list">
+	<table class="table">
+	<thead>
+			<tr>
+				<th scope="col">EMPNO</th>
+				<th scope="col">ENAME</th>
+				<th scope="col">JOB</th>
+				<th scope="col">MGR</th>
+				<th scope="col">HIREDATE</th>
+				<th scope="col">SAL</th>
+				<th scope="col">COMM</th>
+				<th scope="col">DEPTNO</th>
+			</tr>
+		</thead></table>
+		<div id="d"></div>
+
+</body>
+</html>
