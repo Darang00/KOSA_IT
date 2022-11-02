@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+   <script type="text/javascript">
+    /*
+    [javascript]
+    1. for(let index in Arrays){Array[index]}
+    2. Object(JSON): for(let key in jsonObj){jsonobj[key]}
+    3. array.forEach(function(value, index, array){}) 추가: array.map()....
+
+    [Jquery] $().each() 반복문 : 선택된 요소를 반복하겠다
+    1. $(selector).each(function(){}); >> ex) $('p').each(function(){this활용});
+    2. $(selector).each(function(index){this 활용});
+    3. $(selector).each(function(index, element){element}); *^^*
+
+    [Jquery] $.each() : 요소가 없다.
+    1. $.each(Array or Object, function(){this 활용});
+    2. $.each(Array or Object, function(index){this 활용});
+    3. $.each(Array or Object, function(index, element){element});
+
+    parameter가 JSON 객체라면
+    let obj = {name: "홍길동", age:100};
+    $(obj).each(function(key, value){value});
+    $.each(obj, function(key, value){value});
+
+    */
+   $(document).ready(function(){
+    $('p').each(function(){ //p 태그의 개수만큼 계속 function 호출 (callback 함수)
+        //callback 함수 4번 호출
+        //this > p 태그
+        // $(this) 선택자 this 사용해서 Jquery 다양한 함수를 적용
+        console.log("this: " + $(this).text()); //this가 각각의 p 태그를 받는다.
+
+    });
+
+    $('p').each(function(index){ //p 태그의 개수만큼 계속 function 호출 (callback 함수)
+        //callback 함수 4번 호출
+        //this > p 태그
+        // $(this) 선택자 this 사용해서 Jquery 다양한 함수를 적용
+        console.log("index: " + index); //this가 각각의 p 태그를 받는다.
+        console.log(this); // <p>java</p> // <p>jsp</p> // <p>oracle</p> // <p>jquery</p>
+
+        //index 활용하기
+        //$(this).attr("id", "param-" + index);
+        //$(this).attr("style", "color:red");
+        //근데 사실 위와 같은 방식 보다는 jquery는 parameter로 JSON 객체를 사용하는 것을 선호
+        $(this).attr(
+        { //json 객체 방식 // "key1":"value1" , "key2":"value2" ,,,
+            "id":"param-"+index,
+            "style":"color:red"
+        }
+
+        );
+
+    });
+
+    //* 이거는 진짜 중요하다 *//
+    $('p').each(function(index, element){ //초급자 입장에서는 이 방식이 더 편함 // this 안쓰니까
+        console.log("index: " + index);
+        console.log(element);
+        console.log("element: " + $(element).text());
+    });
+
+    $('#btn').click(function(){
+        alert($('#param-1').text());
+    });
+
+    /*
+    let arr = [];
+    arr.push("A")
+    let arr = ["APPLE", "PEAR"]
+
+    //JSON 객체 만들어라
+    let obj = {};
+
+    //JSON 객체 배열을 만들어라
+    let arrobj = [{}, {}, {}]
+    
+
+*/
+
+    let array = [ //객체 배열
+        {"name":"NAVER", "link":"www.naver.com"},
+        {"name":"DAUM", "link":"www.daum.net"},
+        {"name":"GOOGLE", "link":"www.google.com"}
+    ]; 
+    //문제 1.
+    //$.each() 를 사용해서 name 속성의 value값, link 속성의 value 값 출력
+    $.each(array, function(index, obj){
+        console.log(obj); //{name: 'NAVER', link: 'www.naver.com'} //{name: 'DAUM', link: 'www.daum.net'} //{name: 'GOOGLE', link: 'www.google.com'}
+        console.log(obj.name + " / " + obj["link"]); //NAVER / www.naver.com //DAUM / www.daum.net
+    });
+
+    //문제2.
+    let boardobj={
+        values:[
+            {no:1, title:"hello world"},
+            {no:2, title:"korea"},
+            {no:1, title:"kosa world"}
+        ],
+        search: "검색"
+    };
+
+    //1) $.each() 사용해서 no 값과 title 값을 출력하세요
+    $.each(boardobj.values, function(index, obj){ //boardobj.values가 가지고 있는 길이만큼 돌면서 index와 obj 출력한다
+        console.log(index + " / " + obj.no + " , " + obj.title);
+    });
+    /*
+    0 / 1 , hello world
+    1 / 2 , korea
+    2 / 1 , kosa world
+    */
+
+    //2) $.each(boardobj) > key 와 value 값을 출력하세요
+    $.each(boardobj, function(key, value){
+        console.log(key + " / " + value);
+    });
+    /*
+    values / [object Object],[object Object],[object Object]
+    search / 검색
+    */
+
+    //3) $.each no 값, title 값, search 값을 출력하세요 (KEY POINT)
+    // {} > value >> text or Array or {}
+    $.each(boardobj, function(key, value){
+        if(typeof(value) == "object"){
+            //[{}, {}, {}]
+            $.each(value, function(index, obj){
+                console.log(index + " / " + obj.no + " == " + obj["title"])
+            });
+        }else{
+            console.log(key + " / " + value);
+        }
+    });
+
+    /*
+    0 / 1 == hello world
+    1 / 2 == korea
+    2 / 1 == kosa world
+    search / 검색
+    */
+
+
+   });
+
+
+   </script>
+    
+</head>
+<body>
+    <p>java</p>
+    <p>jsp</p>
+    <p>oracle</p>
+    <p>jquery</p>
+    <input type="button" value="click" id="btn">
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <meta charset="UTF-8">
+   <title>Insert title here</title>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+   <script type="text/javascript">
+   /*
+      append() - Inserts content at the end of the selected elements
+      prepend() - Inserts content at the beginning of the selected elements
+      after() - Inserts content after the selected elements
+      before() - Inserts content before the selected elements
+      
+      <p>A</p> >> B append() => 끝나는 태그 바로 앞에 붙힘 => <p>AB</p> => c append() => <p>ABC</p>
+      <p>A</p> >> B prepend() => 시작태그 바로 뒤에 붙힘 A가 아니라 <p> 태그에 붙힘  => <p>BA</p> => c prepend() => <p>CBA</p>
+      <p>A</p> >> B after() => 마지막 태그의 바로 뒤에 붙힘 =><p>A</p>B
+      <p>A</p> >> B before() => 태그의 바로 앞에 붙힘 =>B<p>A</p>
+      
+      태그안쪽 : prepend, append
+      태그 바깥쪽 : after, before
+      
+   */
+      $(function() {
+        $('#btn1').click(function(){
+            $('p').append("<b>append text</b>");
+        });
+
+        $('#btn2').click(function(){
+            $('ol').prepend("<li>prepend text</li>");
+        });
+         
+      });
+   </script>
+</head>
+<body>
+
+   <p>This is a paragraph.</p>
+   <p>This is another paragraph.</p>
+
+   <ol>
+     <li>List item 1</li>
+     <li>List item 2</li>
+     <li>List item 3</li>     
+   </ol>
+
+   <button id="btn1">Append text</button>
+   <button id="btn2">Append list items</button>
+
+</body>
+</html>
