@@ -7,18 +7,25 @@
     <title>Document</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
-        let API = "http://openapi.seoul.go.kr:8088/64547052524461723336744b514444/xml/tvCorona19VaccinestatNew/1/5/";
         $(document).ready(function(){
             $('#btn').click(function(){
-                alert("노다영바보");
+                $('#tableBody').empty();
+                const API = "http://openapi.seoul.go.kr:8088/64547052524461723336744b514444/json/tvCorona19VaccinestatNew/1/10/";
+                
+                
+                let param=API;
+                let inoculatorlist = []; //값 리스트
+
+                $.getJSON(param, function(jsondata, textStatus, xhr){
+                    console.log(jsondata);
+                    $.each(jasondata.tvCorona19VaccinestatNew.row, function(index, obj){
+                        console.log(obj);
+                      inoculatorlist.push(obj);  
+                    })
+                });
             })
         })
 
-
-        function test(){
-            alert("나는 노다영");
-            let test = document.getElementById(btn2);
-        }
     </script>
 
     
@@ -26,5 +33,23 @@
 <body>
     <input type="button" id ="btn2" value ="검색1" onclick="test()">
     <input type="button" id ="btn" value ="검색">
+    <table class = "table table-hover">
+        <thread>
+            <tr>
+                <th scope="col">접종일</th>
+                <th scope="col">접종대상자</th>
+                <th scope="col">1차 접종률</th>
+                <th scope="col">2차접종률</th>
+                <th scope="col">3차접종률</th>
+                <th scope="col">4차접종률</th>
+
+
+            </tr>
+
+
+        </thread>
+
+
+    </table>
 </body>
 </html>
