@@ -1,0 +1,57 @@
+[Problem 1]
+1.1 일차원 배열 score에서 간접연산자 *를 사용한 연산식 *(score + i)는 배열 score의 (i+1) 번째 배열원소로 score[i]와 같다. (O)
+1.2 double형 포인터 pd의 값이 100이라면, (pd+1)은 101이며, pd-1은 99가 된다. (X)
+1.3 일차원 배열의 주소를 갖는 포인터 pa로도 배열과 같이 첨자를 이용하여 pa[i]로 배열원소를 참조할 수 있다. (O)
+1.4 함수헤더의 매개변수에 int ary[]로 기술하는 것은 int *ary로도 대체 가능하다. (O)
+1.5 일차원 배열이름 a에서 연산식 a++는 가능하다. ( X )
+
+
+[Problem 2]
+2.1 double형 포인터에 100이라는 주소 값을 저장하려면 포인터 자료형으로 100을 변환하는 연산식 ( (int*)100 )을 사용해 저장한다.
+2.2 ( 포인터 배열 ) 이란 주소 값을 저장하는 포인터를 배열원소로 갖는 배열
+2.3 문장 int (*ptr)[4];는 열이 4인 ( 배열 ) 포인터 변수 선언 문장이다.
+2.4 ( 함수 포인터 (*) ) 는 함수의 주소값을 저장하는 포인터 변수이다.
+2.5 변수의 주소 값을 16진수로 출력하려면 변환명세 ( %p ) 라고 기술한다.
+
+
+[Problem 3]
+3.1 다
+3.2 나(확실히 아님), 다(P가 소문자여야 함)
+3.3 나
+3.4 다
+3.5 라
+
+[Problem 4]
+4.1 int *a, *b,*c ;
+4.2 double ( *pa)(double)
+4.3 void *pf = pow();
+void *pf = pow(); 
+(*pf)() = pow();
+int *pf = &(int 
+
+[Problem 5]
+18
+
+[Problem 6]
+
+void arraycopy(int *from, int *to, int size)
+{
+int i;
+for (i = 0; i < size; i++) 
+{
+*to++ = *from++; 
+}
+}
+
+void arrayprint(int *p, int size)
+{
+int i;
+for (i = 0; i < size; i++) 
+{
+printf("%d ", *p++ ); 
+}
+puts("");
+}
+
+
+
