@@ -1,0 +1,100 @@
+1. 회원 테이블 생성하기
+create table mvcregister(
+    id number constraint pk_mvcregister_id primary key,
+    pwd varchar2(20) not null,
+    email varchar2(50) not null
+);
+
+desc mvcregister;
+
+--------------------------------------------------------------------------
+>> 웹 프로젝트 생성 >> TEST END
+>> 연결 테스트 (DBCP) >> ojdbc6.jar, context.xml, 연결.jsp >> TEST END
+--------------------------------------------------------------------------
+
+Model2 기반의 MVC 패턴으로 작업 할거다
+
+Model (순수한 자바 코드 POJO)
+	1. DTO 생성 > DB 테이블과 같은 구조로 클래스 생성 > getter, setter 구현
+	2. DB 연결(POOL 사용) > DAO 생성: CRUD > 전체조회, 조건조회, 삽입, 수정 + 알파(LIKE)
+	
+	SERVICE 단... 추후
+	
+View
+	1. html or jsp (구분 기준: UI 데이터 출력 유무) > 우리는 BOOT를 사용해서 > include > 모든 페이지 >JSP
+	2. EL & JSTL > server에서 데이터를 담아서 (request) > forward > 그 request 객체...
+	ex) ${requestScope.list} or ${sessionScope.id} >> 출력(JSTL) 
+	3. JSP는 보완 ... 처리 > WEB-INF 파일 안에 > VIEWS 폴더 안에 > member or admin or board 파일 만들어서 > jsp 관리
+	4. ajax(비동기 처리) > xmlHttpRequest > 
+
+Controller
+	1. 요청마다 Controller 생성하기 (servlet 생성)
+	1.1 write > /write > ServletWrite
+	1.2 list > /list > ServletList
+	
+	2. 요청마다 Controller 생성하지 말고 1개 (servlet 생성)
+	2.1 FrontController >> servlet 1개 (모든 요청 판단) > 판단의 근거
+	2.1.1 판단의 근거
+		1. command 방식: 글쓰기(servlet.do?cmd=write), 글 목록보기(servlet.do?cmd=list)
+			if(cmd.equals("write"){글쓰기 작업 수행}
+		2. url 방식: 글쓰기(write.do?id=kglim&pwd=1004), 글 목록보기(list.do) >> url 기반의 주소값으로 요청을 판단
+			주의) url 패턴이 바뀐다 >> *.do
+			
+---------------------------------------------------------------------------------------------------------
+ --Package  구성  (관리가 편하다 ...)
+  --도메인 구성    
+  
+  기본적인 구조
+  kr.or.kosa.dto
+  kr.or.kosa.dao
+  kr.or.kosa.controller
+  kr.or.kosa.utils
+  
+  업무별  Domain 별 구성을 한다면 
+  kr.or.kosa.member.dto
+  kr.or.kosa.member.dao
+  kr.or.kosa.member.controller
+  
+  kr.or.kosa.admin.dto
+  kr.or.kosa.admin.dao
+  kr.or.kosa.admin.controller
+ 
+ 
+  kr.or.kosa.board.dto
+  kr.or.kosa.board.dao
+  kr.or.kosa.board.controller
+  
+  kr.or.kosa.utils
+  
+  일반적인 구조
+  project
+- blog
+    - controller
+    - dto
+    - entity
+    - service
+- member
+    - controller
+    - dto
+    - entity
+    - service
+---------------------------------------------------------------------------------------------------------
+현재 프로젝트 문제점
+1. controller > 요청받기 > 판단 > 서비스실행 (DB 작업 (dat, dto), 로직(암호화) ) > 저장 > ....
+
+(문제)
+1. controller 많은 작업 수행 >> 서비스 영역
+2. 유지보수 (6개월 새로운 비지니스가 추가 ) 반영... 편하게... 코드가 일관성 ... 하나의 변경이 다른 곳에 ...
+
+(해결)
+1. 서비스영역 분리 (업무) 분리 .... > service 생성 위임(dto, dao, 암호화, 알고리즘 코드)
+
+서비스 > 별도의 클래스 생성 > 업무(비즈니스) 클래스 필요 > 서비스 표준화 (약속, 표준) > 인터페이스 기반 작업 설계
+
+업무는
+ 
+
+
+			
+			
+	
