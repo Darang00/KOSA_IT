@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Insert title here</title>
+    <style type="text/css">
+      h1{
+        font-weight : bold;
+        font-style :oblique;
+      }
+      table{
+          margin-left:auto;
+          margin-right:auto;
+          width : 100%;
+      }
+      th{
+        
+        background-color: #F2DC86;
+        border-collapse:collapse;
+          border: 1px solid black;
+      }
+      table,td {
+        text-align: center; 
+          border-collapse:collapse;
+          border: 1px solid black;
+      };
+
+      #graph-container-01{
+        width: 300px;
+        height: 500px;
+      }
+
+
+  </style>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="https://code.highcharts.com/modules/series-label.js"></script>
+    <script src="https://code.highcharts.com/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/modules/export-data.js"></script>
+    <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+
+
+    <script type="text/javascript">
+
+  $(function () {
+		$('#btn').click(function(){
+			$('#tableBody').empty();
+			
+			const API = "http://openapi.seoul.go.kr:8088/696a70485a6e686a36386251675a6e/json/shuntPlace/1";
+ 			let numVal = $('input[name="num"]:checked').val();
+			let param = (API +"/"+ numVal);
+	        let seoullist = []; // 값 리스트
+	        
+			$.getJSON(param, function(jsondata, textStatus, xhr){	// json에서 배열로 값 샥샥
+				$.each(jsondata.shuntPlace.row, function (index, obj) {
+					seoullist.push(obj);
+                });
+			
+				arrList();
+        chartCallback(seoullist);
+			});		
+
+			function arrList() {	// 테이블에 넣기
+                $.each(seoullist, function (index, obj) {
+                	index = index+1;
+                    $('#tableBody').append('<tr><td>' + index + '</td><td>'
+                    + obj.SHUNT_NAM + '</td><td>' 
+					+ obj.ADR_NAM + '</td><td>' + obj.AREA + '</td><td>' 
+					+ obj.HOU_CNT_M);
+				}
+			)};
+		});
+
+
+
+
+    var chartCallback = function (data) {
+    var chart = $('#chart').highcharts();
+    console.log(data);
+
+    if (chart) {
+      // 차트가 있을경우 제거한다.
+      chart.destroy();
+    }
+
+    if (data) {
+      var categoriesData = []; // 여기에 x축 데이터를 넣는다.
+      var seriesData = []; // 여기에 data를 파싱해 y축 구조를 만들어준다.
+
+
+      $.each(data, function (index, obj) {
+           	console.log(obj.AREA);
+            categoriesData.push(obj.ADR_NAM);
+            seriesData.push(obj.HOU_CNT_M);
+	  	})
+      $('#chart').highcharts({
+   
+        chart: {
+        	zoomType: 'x',
+        },
+        plotOptions: {
+        	series: {
+        		dataLabels: {
+        			enabled: false,       //y축의 값이 그래프에 표시될지 말지 설정
+        		},
+         	}
+        },
+        title: {
+        	text: '최대수용인원'
+        },
+        xAxis: {
+        	categories: categoriesData,
+        },
+        tooltip: {
+        	valueDecimals: 2,
+        	crosshairs: true
+        },
+
+        series: [{
+        	data: seriesData,
+        	name: '최대수용인원',
+        	lineWidth: 0.5,
+        }],
+
+    });
+
+
+    }
+  }
+ 
+});
+
+
+
+      </script>
+    </head>
+
+    <body>
+	<ol class="breadcrumb">
+		<h1><center>서울시 미세먼지 보호소 위치정보</center></h1>
+	</ol>
+	<input type="radio" name="num" id="num" value=10 checked> 10건 보기&nbsp&nbsp&nbsp&nbsp
+	<input type="radio" name="num" id="num" value=20> 20건 보기&nbsp&nbsp&nbsp&nbsp
+	<input type="radio" name="num" id="num" value=30> 30건 보기&nbsp&nbsp&nbsp&nbsp
+	<input type="button" id="btn" value="검색">
+
+
+      <table id = "table" class="table">
+        <thead>
+          <tr>
+            <th scope="col">인덱스</th>
+            <th scope="col">대피소명칭</th>
+            <th scope="col">대피소상세주소</th>
+            <th scope="col">면접</th>
+            <th scope="col">최대수용가능인원</th>
+            
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+		</tbody>
+      </table>
+
+      <div id="chart"></div>
+    </body>
